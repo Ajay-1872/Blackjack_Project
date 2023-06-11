@@ -6,7 +6,8 @@ package blackjackgame;
 
 /**
  *
- * @author ajay odedra
+ * @author ajay odedara
+ * @author anurag yelka 
  */
 import java.util.*;
 
