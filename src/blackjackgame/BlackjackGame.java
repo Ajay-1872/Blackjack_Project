@@ -11,9 +11,9 @@ package blackjackgame;
 import java.util.*;
 
 public class BlackjackGame {
-     List<Player> players;
-    Deck deck;
-    public boolean gameOver;
+    private List<Player> players;
+    private Deck deck;
+    private boolean gameOver;
 
     public BlackjackGame(int numPlayers) {
         players = new ArrayList<>();
@@ -23,6 +23,10 @@ public class BlackjackGame {
         for (int i = 0; i < numPlayers; i++) {
             players.add(new Player("Player " + (i + 1)));
         }
+    }
+
+    public void registerPlayer(Player player) {
+        players.add(player);
     }
 
     public void startGame() {
@@ -87,14 +91,19 @@ public class BlackjackGame {
 
             if (playerBust) {
                 System.out.println(player.getName() + " is bust. Dealer wins!");
+                player.setGameResult(GameResult.LOSS);
             } else if (dealerBust) {
                 System.out.println("Dealer is bust. " + player.getName() + " wins!");
+                player.setGameResult(GameResult.WIN);
             } else if (playerScore > dealerScore) {
                 System.out.println(player.getName() + " wins!");
+                player.setGameResult(GameResult.WIN);
             } else if (playerScore < dealerScore) {
                 System.out.println(player.getName() + " loses. Dealer wins!");
+                player.setGameResult(GameResult.LOSS);
             } else {
                 System.out.println(player.getName() + " and Dealer have a tie!");
+                player.setGameResult(GameResult.TIE);
             }
         }
     }
@@ -188,10 +197,12 @@ class Deck {
 class Player {
     private final String name;
     private final List<Card> hand;
+    private GameResult gameResult;
 
     public Player(String name) {
         this.name = name;
         hand = new ArrayList<>();
+        gameResult = null;
     }
 
     public String getName() {
@@ -229,6 +240,18 @@ class Player {
     public boolean isBust() {
         return getScore() > 21;
     }
+
+    public void setGameResult(GameResult result) {
+        this.gameResult = result;
+    }
+
+    public GameResult getGameResult() {
+        return gameResult;
+    }
 }
 
-
+enum GameResult {
+    WIN,
+    LOSS,
+    TIE
+}
